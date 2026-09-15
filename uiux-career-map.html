@@ -20,7 +20,7 @@
 .comparison-toggle{display:flex;align-items:center;gap:7px;font-size:14px;padding:9px 0;cursor:pointer}.comparison-toggle input{width:17px;height:17px;accent-color:var(--green)}
 .comparison-definition{margin-bottom:12px}.comparison-definition h3{font-size:17px;margin-bottom:8px}.comparison-definition p{max-width:1000px;color:var(--ink)}
 .comparison-hint{font-size:13px;margin:10px 0;color:var(--muted)}.comparison-hint span{display:inline-block;margin-left:8px}
-.comparison-scroll{overflow:auto;max-height:72vh;border:1px solid var(--line);border-radius:12px;background:#fff;overscroll-behavior:contain}
+.comparison-scroll{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);border-radius:12px;background:#fff;overscroll-behavior-x:contain}
 .comparison-scroll:focus-visible{outline:3px solid #8ab7a6;outline-offset:3px}
 .comparison-table{width:100%;min-width:1040px;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:14px;line-height:1.85}
 .comparison-table .comparison-label{width:112px}.comparison-table th,.comparison-table td{min-width:0;padding:16px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);overflow-wrap:anywhere}
@@ -31,7 +31,7 @@
 .comparison-table .comparison-baseline>*{background:#edf3e9}.comparison-table .comparison-baseline th{color:var(--green)}
 .comparison-table ol{margin:0;padding-left:20px}.comparison-table li+li{margin-top:10px}
 .visually-hidden{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-@media(max-width:760px){.comparison-select{width:100%}.comparison-select select{width:100%;min-width:0}.comparison-controls{gap:10px}.comparison-modes button{padding:9px 11px}.comparison-table{min-width:1040px}.comparison-hint span{display:block;margin-left:0}.comparison-scroll{max-height:75vh}}
+@media(max-width:760px){.comparison-select{width:100%}.comparison-select select{width:100%;min-width:0}.comparison-controls{gap:10px}.comparison-modes button{padding:9px 11px}.comparison-table{min-width:1040px}.comparison-hint span{display:block;margin-left:0}}
 @media print{.comparison-controls{display:none}.comparison-scroll{overflow:visible;max-height:none}.comparison-table{min-width:0;font-size:10px}.comparison-table .comparison-label{width:70px}.comparison-table th,.comparison-table td{padding:6px}.comparison-table thead th,.comparison-table tr>:first-child{position:static}.comparison-table thead th{font-size:12px}}
 
 .role-responsibility{color:var(--muted);line-height:1.8;margin:0 0 16px}
@@ -131,8 +131,8 @@ function comparisonUI(){
   <label class="comparison-toggle"><input id="compare-examples" type="checkbox"${comparisonExamples?' checked':''}>一起看做法與案例</label>
  </div>
  <div class="definition comparison-definition"><h3 class="card-title"><span>${esc(item.id)}／${esc(item.name)}</span>${item.discussion_tag?`<span class="badge discussion-tag">${esc(item.discussion_tag)}</span>`:''}</h3><p>${esc(item.definition)}</p></div>
- <p class="comparison-hint">評等只對照目前職等的責任；跨職等不能直接換算，超出期待也不代表自動晉升。${comparisonExamples?'工作例子都是假設情境。':''}<span>表格可上下、左右捲動。</span></p>
- <div class="comparison-scroll" tabindex="0" role="region" aria-label="${esc(item.id)} 四個職等比較表，可捲動">
+ <p class="comparison-hint">評等只對照目前職等的責任；跨職等不能直接換算，超出期待也不代表自動晉升。${comparisonExamples?'工作例子都是假設情境。':''}<span>表格可左右滑動，內容會完整展開。</span></p>
+ <div class="comparison-scroll" tabindex="0" role="region" aria-label="${esc(item.id)} 四個職等比較表，可左右滑動">
   <table class="comparison-table"><caption class="visually-hidden">${esc(item.id)}／${esc(item.name)}：${comparisonMode==='all'?'完整三段評等':'2 符合期待'}，四個職等比較</caption><colgroup><col class="comparison-label">${titles.map(()=>'<col>').join('')}</colgroup><thead><tr><th scope="col">比較項目</th>${titles.map((title,i)=>`<th scope="col"><small>職能 ${i+1}</small>${esc(title)}</th>`).join('')}</tr></thead><tbody>${scope}${rubrics}${examples}</tbody></table>
  </div>`;
  $('#compare-item').onchange=e=>{comparisonId=e.target.value;comparisonUI();syncRoute();$('#compare-item').focus()};
